@@ -1,0 +1,10 @@
+body{
+    font-family: "Montserrat", sans-serif;
+    margin: 0;
+}
+
+#game-window{
+    margin: auto;
+    padding: 0;
+    display: block;
+}
