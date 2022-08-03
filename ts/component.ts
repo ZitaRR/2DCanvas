@@ -4,49 +4,50 @@ import { Vector2 } from "./vector2.js";
 import { Window } from "./window.js";
 
 class Component{
-    public get center(): Vector2{
-        return new Vector2(this.vector.x - this.size.x / 2, this.vector.y - this.size.y / 2);
-    }
+    public get centroid() : Vector2{
+        let centroid: Vector2 = new Vector2(0, 0);
+        for(let i = 0; i < this.vertices.length; i++){
+            centroid.x += this.vertices[i].x;
+            centroid.y += this.vertices[i].y;
+        }
 
-    public get localCenter(): Vector2{
-         return new Vector2(-(this.size.x / 2), -(this.size.y / 2));
-    }
-
-    public get top(): Vector2{
-        return new Vector2(this.center.x, this.center.y - this.size.y / 2);
-    }
-
-    public get right(): Vector2{
-        return new Vector2(this.center.x + this.size.x / 2, this.center.y);
-    }
-
-    public get bottom(): Vector2{
-        return new Vector2(this.center.x, this.center.y + this.size.y / 2);
-    }
-
-    public get left(): Vector2{
-        return new Vector2(this.center.x - this.size.x / 2, this.center.y);
+        centroid.x /= this.vertices.length;
+        centroid.y /= this.vertices.length;
+        return centroid;
     }
 
     public readonly vector: Vector2;
-    public readonly size: Vector2;
     public color: Color;
     
-    private angle: number;
+    protected readonly vertices: Vector2[];
+    protected angle: number;
 
-    constructor(vector: Vector2, size: Vector2, color?: Color){
+    constructor(vector: Vector2, color?: Color, ...vertices : Vector2[]){
         this.vector = vector;
-        this.size = size;
+        this.vertices = vertices;
         this.color = color || Utils.randomRgbColor();
         this.angle = 0;
     }
 
     public draw(context: CanvasRenderingContext2D): void{
         context.save();
+        context.beginPath();
+
         context.translate(this.vector.x, this.vector.y);
-        context.rotate(this.angle * Math.PI / 360);
-        context.fillStyle = this.color.toString();
-        context.fillRect(this.localCenter.x, this.localCenter.y, this.size.x, this.size.y);
+        context.rotate(this.angle * Math.PI / 180);
+        context.strokeStyle = this.color.toString();
+        
+        for(let i = 0; i <= this.vertices.length; i++){
+            const position: Vector2 = this.vertices[i % this.vertices.length];
+            if(!position){
+                break;
+            }
+
+            context.lineTo(position.x, position.y);
+        }
+
+        context.closePath();
+        context.stroke();
         context.restore();
     }
 
@@ -57,13 +58,6 @@ class Component{
     public move(x: number, y: number): void{
         this.vector.x += x;
         this.vector.y += y;
-
-        if(this.top.y > Window.height){
-            this.vector.y = 0 - this.size.y / 2;
-        }
-        else if(this.left.x > Window.width){
-            this.vector.x = 0 - this.size.x / 2;
-        }
     }
 }
 

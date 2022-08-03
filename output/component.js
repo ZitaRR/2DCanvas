@@ -1,37 +1,37 @@
 import { Utils } from "./utils.js";
 import { Vector2 } from "./vector2.js";
-import { Window } from "./window.js";
 class Component {
-    constructor(vector, size, color) {
+    constructor(vector, color, ...vertices) {
         this.vector = vector;
-        this.size = size;
+        this.vertices = vertices;
         this.color = color || Utils.randomRgbColor();
         this.angle = 0;
     }
-    get center() {
-        return new Vector2(this.vector.x - this.size.x / 2, this.vector.y - this.size.y / 2);
-    }
-    get localCenter() {
-        return new Vector2(-(this.size.x / 2), -(this.size.y / 2));
-    }
-    get top() {
-        return new Vector2(this.center.x, this.center.y - this.size.y / 2);
-    }
-    get right() {
-        return new Vector2(this.center.x + this.size.x / 2, this.center.y);
-    }
-    get bottom() {
-        return new Vector2(this.center.x, this.center.y + this.size.y / 2);
-    }
-    get left() {
-        return new Vector2(this.center.x - this.size.x / 2, this.center.y);
+    get centroid() {
+        let centroid = new Vector2(0, 0);
+        for (let i = 0; i < this.vertices.length; i++) {
+            centroid.x += this.vertices[i].x;
+            centroid.y += this.vertices[i].y;
+        }
+        centroid.x /= this.vertices.length;
+        centroid.y /= this.vertices.length;
+        return centroid;
     }
     draw(context) {
         context.save();
+        context.beginPath();
         context.translate(this.vector.x, this.vector.y);
-        context.rotate(this.angle * Math.PI / 360);
-        context.fillStyle = this.color.toString();
-        context.fillRect(this.localCenter.x, this.localCenter.y, this.size.x, this.size.y);
+        context.rotate(this.angle * Math.PI / 180);
+        context.strokeStyle = this.color.toString();
+        for (let i = 0; i <= this.vertices.length; i++) {
+            const position = this.vertices[i % this.vertices.length];
+            if (!position) {
+                break;
+            }
+            context.lineTo(position.x, position.y);
+        }
+        context.closePath();
+        context.stroke();
         context.restore();
     }
     rotate(angle) {
@@ -40,12 +40,6 @@ class Component {
     move(x, y) {
         this.vector.x += x;
         this.vector.y += y;
-        if (this.top.y > Window.height) {
-            this.vector.y = 0 - this.size.y / 2;
-        }
-        else if (this.left.x > Window.width) {
-            this.vector.x = 0 - this.size.x / 2;
-        }
     }
 }
 export { Component };

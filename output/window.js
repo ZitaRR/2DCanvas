@@ -1,4 +1,4 @@
-import { Component } from "./component.js";
+import { Utils } from "./utils.js";
 import { Vector2 } from "./vector2.js";
 class Window {
     constructor() {
@@ -39,7 +39,7 @@ class Window {
         window.addEventListener("click", (event) => {
             const rect = this.canvas.getBoundingClientRect();
             const position = new Vector2(event.clientX - rect.left, event.clientY - rect.top);
-            this.game.instantiate(new Component(position, new Vector2(100, 100)));
+            this.game.instantiate(Utils.randomShape(position, 50));
         });
     }
     static setSize() {
