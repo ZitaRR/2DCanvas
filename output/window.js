@@ -1,5 +1,3 @@
-import { GameObject } from "./game_object.js";
-import { Utils } from "./utils.js";
 import { Vector2 } from "./vector2.js";
 class Window {
     constructor() {
@@ -38,7 +36,7 @@ class Window {
         window.addEventListener("click", (event) => {
             const rect = this.canvas.getBoundingClientRect();
             const position = new Vector2(event.clientX - rect.left, event.clientY - rect.top);
-            this.game.instantiate(new GameObject(position, new Vector2(50, 50), 0, Utils.randomShape()));
+            this.game.instantiateRandom(position);
         });
     }
     static setSize() {

@@ -2,6 +2,9 @@ import { GameObject } from "./game_object.js";
 import { Vector2 } from "./vector2.js";
 import { Window } from "./window.js";
 import * as PrimitiveShapes from "./primitive_shapes/primitive_shapes.js"
+import { Utils } from "./utils.js";
+import { Renderer } from "./renderer.js";
+import { Color } from "./color.js";
 
 class Game{
     public static get instance(): Game{
@@ -69,6 +72,14 @@ class Game{
 
     public instantiate(comp: GameObject): void{
         this.objects.push(comp);
+    }
+
+    public instantiateRandom(position?: Vector2): void{
+        position ??= new Vector2(Math.random() * Window.width, Math.random() * Window.height);
+        const scale: Vector2 = new Vector2(Math.random() * 300, Math.random() * 300);
+        const angle: number =  Math.random() * 360;
+        const shape: typeof Renderer = Utils.randomShape();
+        this.instantiate(new GameObject(position, scale, angle, shape));
     }
 }
 
