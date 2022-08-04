@@ -46,11 +46,6 @@ class Game {
             object.rotate(1);
             object.move(1, 0);
             object.update();
-            const e = Math.random();
-            if (e > .999) {
-                console.log("Hello");
-                object.addComponent(PrimitiveShapes.Triangle);
-            }
         }
         setTimeout(() => this.draw(), 1);
     }
