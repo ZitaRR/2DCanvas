@@ -10,17 +10,17 @@ class Utils {
         const b = Math.random() * 255;
         return new Color(r, g, b);
     }
-    static randomShape(vector, size) {
+    static randomShape() {
         const index = Math.floor(Math.random() * 4);
         switch (index) {
             case 0:
-                return new PrimitiveShapes.Circle(vector, size);
+                return PrimitiveShapes.Circle;
             case 1:
-                return new PrimitiveShapes.Square(vector, size);
+                return PrimitiveShapes.Square;
             case 2:
-                return new PrimitiveShapes.Triangle(vector, size, size);
+                return PrimitiveShapes.Triangle;
             case 3:
-                return new PrimitiveShapes.Pentagon(vector, size);
+                return PrimitiveShapes.Pentagon;
             default:
                 throw new Error("This really shouldn't happen");
         }

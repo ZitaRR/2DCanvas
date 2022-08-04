@@ -1,17 +1,13 @@
 import { Component } from "./component.js";
 import { Game } from "./game.js";
+import { GameObject } from "./game_object.js";
+import { Circle } from "./primitive_shapes/circle.js";
+import { Square } from "./primitive_shapes/square.js";
+import { Renderer } from "./renderer.js";
 import { Utils } from "./utils.js";
 import { Vector2 } from "./vector2.js";
 
 class Window{
-    public static get context(): CanvasRenderingContext2D{
-        const context = this.canvas.getContext("2d");
-        if(!context){
-            throw new Error("Failed to retrieve context");
-        }
-        return context;
-    }
-
     public static get width(): number{
         return this.canvas.width;
     }
@@ -31,10 +27,17 @@ class Window{
         throw new Error("Cannot be instantiated");
     }
 
-    public static initialize(game: Game): void{
+    public static initialize(game: Game): CanvasRenderingContext2D{
         this.setupCanvas();
+
+        const context: CanvasRenderingContext2D | null = this.canvas.getContext("2d");
+        if(!context){
+            throw new Error("Failed to retrieve context");
+        }
+
         this.setupEvents();
         this.game = game;
+        return context;
     }
 
     private static setupCanvas(): void{
@@ -53,7 +56,7 @@ class Window{
         window.addEventListener("click", (event) => {
             const rect: DOMRect = this.canvas.getBoundingClientRect();
             const position: Vector2 = new Vector2(event.clientX - rect.left, event.clientY - rect.top);
-            this.game.instantiate(Utils.randomShape(position, 50));
+            this.game.instantiate(new GameObject(position, 50, 0, Utils.randomShape()));
         });
     }
 

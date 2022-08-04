@@ -1,6 +1,6 @@
 import { Color } from "./color.js";
-import { Component } from "./component.js";
-import { Vector2 } from "./vector2.js";
+import { GameObject } from "./game_object.js";
+import { Renderer } from "./renderer.js";
 import * as PrimitiveShapes from "./primitive_shapes/primitive_shapes.js"
 
 class Utils{
@@ -15,17 +15,17 @@ class Utils{
         return new Color(r, g, b);
     }
 
-    public static randomShape(vector: Vector2, size: number): Component{
+    public static randomShape(): typeof Renderer{
         const index = Math.floor(Math.random() * 4);
         switch(index){
             case 0:
-                return new PrimitiveShapes.Circle(vector, size);
+                return PrimitiveShapes.Circle;
             case 1:
-                return new PrimitiveShapes.Square(vector, size);
+                return PrimitiveShapes.Square;
             case 2:
-                return new PrimitiveShapes.Triangle(vector, size, size);
+                return PrimitiveShapes.Triangle;
             case 3:
-                return new PrimitiveShapes.Pentagon(vector, size);
+                return PrimitiveShapes.Pentagon;
             default:
                 throw new Error("This really shouldn't happen");
         }

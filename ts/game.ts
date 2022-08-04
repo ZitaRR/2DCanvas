@@ -1,4 +1,4 @@
-import { Component } from "./component.js";
+import { GameObject } from "./game_object.js";
 import { Vector2 } from "./vector2.js";
 import { Window } from "./window.js";
 import * as PrimitiveShapes from "./primitive_shapes/primitive_shapes.js"
@@ -10,13 +10,16 @@ class Game{
 
     private static _instance: Game;
 
+    public get context(){
+        return this._context;
+    }
+
     private last: Date = new Date();
     private now: Date = new Date();
     private filter: number = 50;
     private frames: number = 0;
-    private context: CanvasRenderingContext2D;
-    private components: Component[] = [];
-    private map: Map<number, string> = new Map();
+    private objects: GameObject[] = [];
+    private readonly _context: CanvasRenderingContext2D;
 
     constructor(){
         if(Game.instance){
@@ -24,21 +27,20 @@ class Game{
         }
 
         Game._instance = this;
-        Window.initialize(this);
+        this._context = Window.initialize(this);
 
         this.filter = 50;
         this.frames = 0;
-        this.context = Window.context;
         this.context.lineWidth = 5;
 
         this.start();
     }
 
     public start(): void{
-        this.components.push(new PrimitiveShapes.Square(new Vector2(100, 100), 50));
-        this.components.push(new PrimitiveShapes.Triangle(new Vector2(200, 100), 50, 50));
-        this.components.push(new PrimitiveShapes.Circle(new Vector2(300, 100), 50));
-        this.components.push(new PrimitiveShapes.Pentagon(new Vector2(400, 100), 50));
+        this.objects.push(new GameObject(new Vector2(100, 100), 50, 0, PrimitiveShapes.Square));
+        this.objects.push(new GameObject(new Vector2(200, 100), 50, 0, PrimitiveShapes.Triangle));
+        this.objects.push(new GameObject(new Vector2(300, 100), 50, 0, PrimitiveShapes.Pentagon));
+        this.objects.push(new GameObject(new Vector2(400, 100), 50, 0, PrimitiveShapes.Circle));
 
         setTimeout(() => this.draw(), 100);
     }
@@ -55,18 +57,18 @@ class Game{
 
         this.context.clearRect(0, 0, Window.width, Window.height);
 
-        for(let i in this.components){
-            const comp: Component = this.components[i];
-            comp.rotate(1);
-            comp.move(1, 0);
-            comp.draw(this.context);
+        for(let i in this.objects){
+            const object: GameObject = this.objects[i];
+            object.rotate(1);
+            object.move(1, 0);
+            object.update();
         }
 
         setTimeout(() => this.draw(), 1);
     }
 
-    public instantiate(comp: Component): void{
-        this.components.push(comp);
+    public instantiate(comp: GameObject): void{
+        this.objects.push(comp);
     }
 }
 

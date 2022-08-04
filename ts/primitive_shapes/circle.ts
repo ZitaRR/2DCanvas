@@ -1,26 +1,26 @@
-import { Component } from "../component.js";
-import { Vector2 } from "../vector2.js";
+import { GameObject } from "../game_object.js";
+import { Renderer } from "../renderer.js";
 
-class Circle extends Component{
+class Circle extends Renderer{
     public readonly radius: number;
 
-    constructor(vector: Vector2, diameter: number){
-        super(vector);
-        this.radius = diameter / 2;
+    constructor(object: GameObject){
+        super(object);
+        this.radius = object.size / 2;
     }
 
-    public draw(context: CanvasRenderingContext2D): void {
-        context.save();
+    protected draw(): void {
+        this.context.save();
 
-        context.translate(this.vector.x, this.vector.y);
-        context.rotate(this.angle * Math.PI / 180);
+        this.context.translate(this.object.vector.x, this.object.vector.y);
+        this.context.rotate(this.object.angle * Math.PI / 180);
 
-        context.beginPath();
-        context.arc(0, 0, this.radius, 0, 2 * Math.PI);
-        context.closePath();
-        context.stroke();
+        this.context.beginPath();
+        this.context.arc(0, 0, this.radius, 0, 2 * Math.PI);
+        this.context.closePath();
+        this.context.stroke();
 
-        context.restore();
+        this.context.restore();
     }
 }
 

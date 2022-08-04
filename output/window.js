@@ -1,15 +1,9 @@
+import { GameObject } from "./game_object.js";
 import { Utils } from "./utils.js";
 import { Vector2 } from "./vector2.js";
 class Window {
     constructor() {
         throw new Error("Cannot be instantiated");
-    }
-    static get context() {
-        const context = this.canvas.getContext("2d");
-        if (!context) {
-            throw new Error("Failed to retrieve context");
-        }
-        return context;
     }
     static get width() {
         return this.canvas.width;
@@ -22,8 +16,13 @@ class Window {
     }
     static initialize(game) {
         this.setupCanvas();
+        const context = this.canvas.getContext("2d");
+        if (!context) {
+            throw new Error("Failed to retrieve context");
+        }
         this.setupEvents();
         this.game = game;
+        return context;
     }
     static setupCanvas() {
         this.canvas = document.createElement("canvas");
@@ -39,7 +38,7 @@ class Window {
         window.addEventListener("click", (event) => {
             const rect = this.canvas.getBoundingClientRect();
             const position = new Vector2(event.clientX - rect.left, event.clientY - rect.top);
-            this.game.instantiate(Utils.randomShape(position, 50));
+            this.game.instantiate(new GameObject(position, 50, 0, Utils.randomShape()));
         });
     }
     static setSize() {
