@@ -3,17 +3,13 @@ import { Renderer } from "../renderer.js";
 import { Vector2 } from "../vector2.js";
 
 class Pentagon extends Renderer{
-    public readonly radius: number;
-
     constructor(object: GameObject){
-        const radius: number = object.size / 2;
         super(object, undefined, 
-            new Vector2(0, -radius),
-            new Vector2(radius, -(radius * .15)),
-            new Vector2(radius - radius * .35, radius),
-            new Vector2(-radius + radius * .35, radius),
-            new Vector2(-radius, -(radius * .15)));
-        this.radius = radius;
+            new Vector2(0, -object.scale.y / 2),
+            new Vector2(object.scale.x / 2, -(object.scale.y / 2 * .15)),
+            new Vector2(object.scale.x / 2 - object.scale.x / 2 * .35, object.scale.y / 2),
+            new Vector2(-object.scale.x / 2 + object.scale.x / 2 * .35, object.scale.y / 2),
+            new Vector2(-object.scale.x / 2, -(object.scale.y / 2 * .15)));
     }
 }
 

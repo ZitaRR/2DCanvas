@@ -2,7 +2,7 @@ import { Renderer } from "../renderer.js";
 class Circle extends Renderer {
     constructor(object) {
         super(object);
-        this.radius = object.size / 2;
+        this.radius = object.scale.x / 2;
     }
     draw() {
         this.context.save();

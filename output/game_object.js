@@ -1,15 +1,12 @@
 class GameObject {
-    constructor(vector, size, angle = 0, ...components) {
+    constructor(vector, scale, angle = 0, ...components) {
         this.components = [];
         this.vector = vector;
-        this._size = size;
+        this.scale = scale;
         this._angle = angle;
         for (let i = 0; i < components.length; i++) {
             this.components.push(new components[i](this));
         }
-    }
-    get size() {
-        return this._size;
     }
     get angle() {
         return this._angle;

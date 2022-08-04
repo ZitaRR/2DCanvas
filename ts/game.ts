@@ -37,10 +37,10 @@ class Game{
     }
 
     public start(): void{
-        this.objects.push(new GameObject(new Vector2(100, 100), 50, 0, PrimitiveShapes.Square));
-        this.objects.push(new GameObject(new Vector2(200, 100), 50, 0, PrimitiveShapes.Triangle));
-        this.objects.push(new GameObject(new Vector2(300, 100), 50, 0, PrimitiveShapes.Pentagon));
-        this.objects.push(new GameObject(new Vector2(400, 100), 50, 0, PrimitiveShapes.Circle));
+        this.objects.push(new GameObject(new Vector2(100, 100), new Vector2(50, 50), 0, PrimitiveShapes.Square));
+        this.objects.push(new GameObject(new Vector2(200, 100), new Vector2(50, 50), 0, PrimitiveShapes.Triangle));
+        this.objects.push(new GameObject(new Vector2(300, 100), new Vector2(50, 50), 0, PrimitiveShapes.Pentagon));
+        this.objects.push(new GameObject(new Vector2(400, 100), new Vector2(50, 50), 0, PrimitiveShapes.Circle));
 
         setTimeout(() => this.draw(), 100);
     }

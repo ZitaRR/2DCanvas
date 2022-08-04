@@ -56,7 +56,7 @@ class Window{
         window.addEventListener("click", (event) => {
             const rect: DOMRect = this.canvas.getBoundingClientRect();
             const position: Vector2 = new Vector2(event.clientX - rect.left, event.clientY - rect.top);
-            this.game.instantiate(new GameObject(position, 50, 0, Utils.randomShape()));
+            this.game.instantiate(new GameObject(position, new Vector2(50, 50), 0, Utils.randomShape()));
         });
     }
 

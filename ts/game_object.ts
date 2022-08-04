@@ -2,23 +2,19 @@ import { Component } from "./component.js";
 import { Vector2 } from "./vector2.js";
 
 class GameObject{
-    public get size(){
-        return this._size;
-    }
-
     public get angle(){
         return this._angle;
     }
 
-    public readonly vector: Vector2;
-    
-    protected _size: number;
+    public vector: Vector2;
+    public scale: Vector2;
+
     protected _angle: number;
     protected components: Component[] = [];
 
-    constructor(vector: Vector2, size: number, angle: number = 0, ...components: { new(object: GameObject): Component }[]){
+    constructor(vector: Vector2, scale: Vector2, angle: number = 0, ...components: { new(object: GameObject): Component }[]){
         this.vector = vector;
-        this._size = size;
+        this.scale = scale;
         this._angle = angle;
         
         for(let i = 0; i < components.length; i++){

@@ -6,7 +6,7 @@ class Circle extends Renderer{
 
     constructor(object: GameObject){
         super(object);
-        this.radius = object.size / 2;
+        this.radius = object.scale.x / 2;
     }
 
     protected draw(): void {
