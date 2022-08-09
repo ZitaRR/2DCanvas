@@ -31,7 +31,7 @@ class GameObject {
     getComponent(type) {
         for (let i = 0; i < this.components.length; i++) {
             const component = this.components[i];
-            if (typeof type === typeof component) {
+            if (component instanceof type) {
                 return component;
             }
         }
@@ -40,7 +40,7 @@ class GameObject {
     removeComponent(type) {
         for (let i = 0; i < this.components.length; i++) {
             const component = this.components[i];
-            if (typeof type === typeof component) {
+            if (component instanceof type) {
                 this.components.slice(i, 1);
                 return;
             }

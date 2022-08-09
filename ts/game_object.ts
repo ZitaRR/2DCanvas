@@ -43,20 +43,20 @@ class GameObject{
         return component;
     }
 
-    public getComponent<T extends Component>(type: T): Component | null{
+    public getComponent<T extends Component>(type: { new(...args: any[]): T }): T | null{
         for(let i = 0; i < this.components.length; i++){
             const component: Component = this.components[i];
-            if(typeof type === typeof component){
+            if(component instanceof type){
                 return component;
             }
         }
         return null;
     }
 
-    public removeComponent<T extends Component>(type: T): void{
+    public removeComponent<T extends Component>(type: { new(...args: any[]): T }): void{
         for(let i = 0; i < this.components.length; i++){
             const component: Component = this.components[i];
-            if(typeof type === typeof component){
+            if(component instanceof type){
                 this.components.slice(i, 1);
                 return;
             }
