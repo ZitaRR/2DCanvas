@@ -6,13 +6,17 @@ import { Vector2 } from "./vector2.js";
 import { Component } from "./component.js";
 
 class Renderer extends Component{
-    protected vertices: Vector2[];
+    public get vertices(): Vector2[]{
+        return this._vertices;
+    }
+
+    protected _vertices: Vector2[];
     protected color: Color;
     protected readonly context: CanvasRenderingContext2D;
 
     constructor(object: GameObject, color?: Color, ...vertices: Vector2[]){
         super(object);
-        this.vertices = vertices;
+        this._vertices = vertices;
         this.color = color || Utils.randomRgbColor();
         this.context = Game.instance.context;
     }
@@ -29,7 +33,6 @@ class Renderer extends Component{
         this.context.save();
 
         this.context.translate(this.object.vector.x, this.object.vector.y);
-        this.context.rotate(this.object.angle * Math.PI / 180);
         this.context.strokeStyle = this.color.toString();
         this.context.beginPath();
 
@@ -39,12 +42,24 @@ class Renderer extends Component{
                 break;
             }
 
-            this.context.lineTo(position.x, position.y);
+            const rotation: Vector2 = new Vector2(
+                position.x * Math.cos(this.object.angle * (Math.PI / 180)) - position.y * Math.sin(this.object.angle * (Math.PI / 180)),
+                position.x * Math.sin(this.object.angle * (Math.PI / 180)) + position.y * Math.cos(this.object.angle * (Math.PI / 180))
+            );
+            this.context.lineTo(rotation.x, rotation.y);
         }
 
         this.context.closePath();
         this.context.stroke();
         this.context.restore();
+    }
+
+    public centroid(): Vector2{
+        const centroid = new Vector2();
+        for(let i in this.vertices){
+            centroid.add(this.vertices[i]);
+        }
+        return centroid.divide(this.vertices.length);
     }
 }
 
