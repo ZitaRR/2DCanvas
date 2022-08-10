@@ -11,16 +11,14 @@ class Utils {
         return new Color(r, g, b);
     }
     static randomShape() {
-        const index = Math.floor(Math.random() * 4);
+        const index = Math.floor(Math.random() * 3);
         switch (index) {
             case 0:
-                return PrimitiveShapes.Circle;
+                return PrimitiveShapes.Pentagon;
             case 1:
                 return PrimitiveShapes.Square;
             case 2:
                 return PrimitiveShapes.Triangle;
-            case 3:
-                return PrimitiveShapes.Pentagon;
             default:
                 throw new Error("This really shouldn't happen");
         }

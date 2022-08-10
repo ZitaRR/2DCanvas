@@ -3,6 +3,9 @@ class Vector2 {
         this.x = x;
         this.y = y;
     }
+    toString() {
+        return `[${this.x}, ${this.y}]`;
+    }
     add(vector) {
         this.x += vector.x;
         this.y += vector.y;

@@ -7,10 +7,19 @@ class Renderer extends Component {
         super(object);
         this._vertices = vertices;
         this.color = color || Utils.randomRgbColor();
+        this.initailColor = this.color;
         this.context = Game.instance.context;
     }
     get vertices() {
         return this._vertices;
+    }
+    get transformedVertices() {
+        const vertices = [];
+        for (let i in this._vertices) {
+            const position = this._vertices[i];
+            vertices.push(new Vector2(this.object.vector.x + (position.x * Math.cos(this.object.angle * (Math.PI / 180)) - position.y * Math.sin(this.object.angle * (Math.PI / 180))), this.object.vector.y + (position.x * Math.sin(this.object.angle * (Math.PI / 180)) + position.y * Math.cos(this.object.angle * (Math.PI / 180)))));
+        }
+        return vertices;
     }
     run() {
         this.draw();
@@ -20,7 +29,6 @@ class Renderer extends Component {
             return;
         }
         this.context.save();
-        this.context.translate(this.object.vector.x, this.object.vector.y);
         this.context.strokeStyle = this.color.toString();
         this.context.beginPath();
         for (let i = 0; i < this.vertices.length; i++) {
@@ -28,7 +36,7 @@ class Renderer extends Component {
             if (!position) {
                 break;
             }
-            const rotation = new Vector2(position.x * Math.cos(this.object.angle * (Math.PI / 180)) - position.y * Math.sin(this.object.angle * (Math.PI / 180)), position.x * Math.sin(this.object.angle * (Math.PI / 180)) + position.y * Math.cos(this.object.angle * (Math.PI / 180)));
+            const rotation = new Vector2(this.object.vector.x + (position.x * Math.cos(this.object.angle * (Math.PI / 180)) - position.y * Math.sin(this.object.angle * (Math.PI / 180))), this.object.vector.y + (position.x * Math.sin(this.object.angle * (Math.PI / 180)) + position.y * Math.cos(this.object.angle * (Math.PI / 180))));
             this.context.lineTo(rotation.x, rotation.y);
         }
         this.context.closePath();

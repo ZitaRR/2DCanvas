@@ -4,6 +4,7 @@ class GameObject {
         this.vector = vector;
         this.scale = scale;
         this._angle = angle;
+        this.id = GameObject.ids++;
         for (let i = 0; i < components.length; i++) {
             this.components.push(new components[i](this));
         }
@@ -22,6 +23,9 @@ class GameObject {
     move(x, y) {
         this.vector.x += x;
         this.vector.y += y;
+    }
+    isSame(object) {
+        return object.id === this.id;
     }
     addComponent(type) {
         const component = new type(this);
@@ -47,4 +51,5 @@ class GameObject {
         }
     }
 }
+GameObject.ids = 0;
 export { GameObject };

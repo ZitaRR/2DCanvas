@@ -31,7 +31,20 @@ class Window {
     static setupEvents() {
         window.addEventListener("resize", () => this.setSize());
         window.addEventListener("keydown", (event) => {
-            console.log(event);
+            switch (event.key) {
+                case "w":
+                    this.game.movePlayer(new Vector2(0, -1));
+                    break;
+                case "a":
+                    this.game.movePlayer(new Vector2(-1, 0));
+                    break;
+                case "s":
+                    this.game.movePlayer(new Vector2(0, 1));
+                    break;
+                case "d":
+                    this.game.movePlayer(new Vector2(1, 0));
+                    break;
+            }
         });
         window.addEventListener("click", (event) => {
             const rect = this.canvas.getBoundingClientRect();

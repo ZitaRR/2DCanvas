@@ -10,14 +10,28 @@ class Renderer extends Component{
         return this._vertices;
     }
 
+    public get transformedVertices(): Vector2[]{
+        const vertices: Vector2[] = [];
+        for(let i in this._vertices){
+            const position: Vector2 = this._vertices[i];
+            vertices.push(new Vector2(
+                this.object.vector.x + (position.x * Math.cos(this.object.angle * (Math.PI / 180)) - position.y * Math.sin(this.object.angle * (Math.PI / 180))),
+                this.object.vector.y + (position.x * Math.sin(this.object.angle * (Math.PI / 180)) + position.y * Math.cos(this.object.angle * (Math.PI / 180)))
+            ));
+        }
+        return vertices;
+    }
+
     protected _vertices: Vector2[];
-    protected color: Color;
+    public color: Color;
+    public readonly initailColor: Color;
     protected readonly context: CanvasRenderingContext2D;
 
     constructor(object: GameObject, color?: Color, ...vertices: Vector2[]){
         super(object);
         this._vertices = vertices;
         this.color = color || Utils.randomRgbColor();
+        this.initailColor = this.color;
         this.context = Game.instance.context;
     }
 
@@ -32,7 +46,6 @@ class Renderer extends Component{
 
         this.context.save();
 
-        this.context.translate(this.object.vector.x, this.object.vector.y);
         this.context.strokeStyle = this.color.toString();
         this.context.beginPath();
 
@@ -41,10 +54,10 @@ class Renderer extends Component{
             if(!position){
                 break;
             }
-
+            
             const rotation: Vector2 = new Vector2(
-                position.x * Math.cos(this.object.angle * (Math.PI / 180)) - position.y * Math.sin(this.object.angle * (Math.PI / 180)),
-                position.x * Math.sin(this.object.angle * (Math.PI / 180)) + position.y * Math.cos(this.object.angle * (Math.PI / 180))
+                this.object.vector.x + (position.x * Math.cos(this.object.angle * (Math.PI / 180)) - position.y * Math.sin(this.object.angle * (Math.PI / 180))),
+                this.object.vector.y + (position.x * Math.sin(this.object.angle * (Math.PI / 180)) + position.y * Math.cos(this.object.angle * (Math.PI / 180)))
             );
             this.context.lineTo(rotation.x, rotation.y);
         }

@@ -2,12 +2,15 @@ import { Component } from "./component.js";
 import { Vector2 } from "./vector2.js";
 
 class GameObject{
+    private static ids: number = 0;
+
     public get angle(){
         return this._angle;
     }
 
     public vector: Vector2;
     public scale: Vector2;
+    public readonly id: number;
 
     protected _angle: number;
     protected components: Component[] = [];
@@ -16,6 +19,7 @@ class GameObject{
         this.vector = vector;
         this.scale = scale;
         this._angle = angle;
+        this.id = GameObject.ids++;
         
         for(let i = 0; i < components.length; i++){
             this.components.push(new components[i](this));
@@ -35,6 +39,10 @@ class GameObject{
     public move(x: number, y: number): void{
         this.vector.x += x;
         this.vector.y += y;
+    }
+
+    public isSame(object: GameObject): boolean{
+        return object.id === this.id;
     }
 
     public addComponent<T extends Component>(type: { new(object: GameObject): T; }): Component{
